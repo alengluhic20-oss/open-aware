@@ -1,0 +1,90 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: laa-agent
+  namespace: maat-framework
+  labels:
+    app: laa-agent
+    agent: legal-attestation
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: laa-agent
+  template:
+    metadata:
+      labels:
+        app: laa-agent
+        agent: legal-attestation
+    spec:
+      containers:
+      - name: laa-agent
+        image: maat-framework:latest
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: AGENT_TYPE
+          value: "LAA"
+        - name: PORT
+          value: "8004"
+        ports:
+        - containerPort: 8004
+          name: http
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8004
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8004
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          timeoutSeconds: 3
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: laa-service
+  namespace: maat-framework
+  labels:
+    app: laa-agent
+spec:
+  selector:
+    app: laa-agent
+  ports:
+  - port: 8004
+    targetPort: 8004
+    protocol: TCP
+    name: http
+  type: ClusterIP
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: laa-hpa
+  namespace: maat-framework
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: laa-agent
+  minReplicas: 2
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70

@@ -1,0 +1,90 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: uea-agent
+  namespace: maat-framework
+  labels:
+    app: uea-agent
+    agent: universal-ethics
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: uea-agent
+  template:
+    metadata:
+      labels:
+        app: uea-agent
+        agent: universal-ethics
+    spec:
+      containers:
+      - name: uea-agent
+        image: maat-framework:latest
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: AGENT_TYPE
+          value: "UEA"
+        - name: PORT
+          value: "8003"
+        ports:
+        - containerPort: 8003
+          name: http
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8003
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8003
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          timeoutSeconds: 3
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: uea-service
+  namespace: maat-framework
+  labels:
+    app: uea-agent
+spec:
+  selector:
+    app: uea-agent
+  ports:
+  - port: 8003
+    targetPort: 8003
+    protocol: TCP
+    name: http
+  type: ClusterIP
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: uea-hpa
+  namespace: maat-framework
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: uea-agent
+  minReplicas: 2
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70

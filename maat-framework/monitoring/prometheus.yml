@@ -1,0 +1,76 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    cluster: 'maat-framework'
+    replica: 'prometheus'
+
+scrape_configs:
+  # Orchestrator service
+  - job_name: 'orchestrator'
+    static_configs:
+      - targets: ['orchestrator:8000']
+        labels:
+          service: 'orchestrator'
+          component: 'api'
+
+  # CNA Agent
+  - job_name: 'cna-agent'
+    static_configs:
+      - targets: ['cna-agent:8001']
+        labels:
+          service: 'cna-agent'
+          agent: 'creative-narrative'
+
+  # TSA Agent
+  - job_name: 'tsa-agent'
+    static_configs:
+      - targets: ['tsa-agent:8002']
+        labels:
+          service: 'tsa-agent'
+          agent: 'truth-safety'
+
+  # UEA Agent
+  - job_name: 'uea-agent'
+    static_configs:
+      - targets: ['uea-agent:8003']
+        labels:
+          service: 'uea-agent'
+          agent: 'universal-ethics'
+
+  # LAA Agent
+  - job_name: 'laa-agent'
+    static_configs:
+      - targets: ['laa-agent:8004']
+        labels:
+          service: 'laa-agent'
+          agent: 'legal-attestation'
+
+  # HTA Agent
+  - job_name: 'hta-agent'
+    static_configs:
+      - targets: ['hta-agent:8005']
+        labels:
+          service: 'hta-agent'
+          agent: 'human-transparency'
+
+  # Kubernetes pods
+  - job_name: 'kubernetes-pods'
+    kubernetes_sd_configs:
+      - role: pod
+        namespaces:
+          names:
+            - maat-framework
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
+        action: keep
+        regex: true
+      - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_path]
+        action: replace
+        target_label: __metrics_path__
+        regex: (.+)
+      - source_labels: [__address__, __meta_kubernetes_pod_annotation_prometheus_io_port]
+        action: replace
+        regex: ([^:]+)(?::\d+)?;(\d+)
+        replacement: $1:$2
+        target_label: __address__
