@@ -6,8 +6,13 @@ Coordinates all agents to govern narrative content.
 
 import asyncio
 import logging
+import sys
+import os
 from typing import Dict, Any, List
 from datetime import datetime
+
+# Add parent directory to path
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from agents import (
     CreativeNarrativeAgent,
