@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: maat-framework
+  labels:
+    name: maat-framework
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: maat-config
+  namespace: maat-framework
+data:
+  CNA_URL: "http://cna-service:8001"
+  TSA_URL: "http://tsa-service:8002"
+  UEA_URL: "http://uea-service:8003"
+  LAA_URL: "http://laa-service:8004"
+  HTA_URL: "http://hta-service:8005"
