@@ -206,6 +206,18 @@ async def test_health_check():
     print("✓ Health check test passed")
 
 
+async def run_all_async_tests():
+    """Run all async tests"""
+    await test_dangerous_automation_rejection()
+    await test_undefined_variables_remediation()
+    await test_security_protocols_generated()
+    await test_7_step_reasoning_chain()
+    await test_maat_principles_applied()
+    await test_gene_keys_framework()
+    await test_human_design_integration()
+    await test_health_check()
+
+
 def run_all_tests():
     """Run all tests"""
     print("\n" + "="*60)
@@ -215,16 +227,8 @@ def run_all_tests():
     # Synchronous tests
     test_agent_initialization()
     
-    # Async tests
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(test_dangerous_automation_rejection())
-    loop.run_until_complete(test_undefined_variables_remediation())
-    loop.run_until_complete(test_security_protocols_generated())
-    loop.run_until_complete(test_7_step_reasoning_chain())
-    loop.run_until_complete(test_maat_principles_applied())
-    loop.run_until_complete(test_gene_keys_framework())
-    loop.run_until_complete(test_human_design_integration())
-    loop.run_until_complete(test_health_check())
+    # Run all async tests together
+    asyncio.run(run_all_async_tests())
     
     print("\n" + "="*60)
     print("All CVA Agent Tests Passed! ✓")
