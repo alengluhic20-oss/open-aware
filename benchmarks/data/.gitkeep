@@ -1,0 +1,5 @@
+# This file ensures the data directory is tracked by git.
+# Add your benchmark JSONL files here:
+# - train.jsonl (optional)
+# - val.jsonl (optional)
+# - test.jsonl (required for benchmarking)
