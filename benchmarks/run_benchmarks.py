@@ -27,13 +27,18 @@ from collections import defaultdict
 # Adjust these imports to match your actual package structure.
 # If the evaluator package is not available, the adapters will raise ImportError.
 try:
-    from evaluator.embedding import EmbeddingEvaluator
-    from evaluator.llm_judge import LLMJudgeEvaluator
-    from evaluator.hybrid import HybridEvaluator
+    from benchmarks.evaluator.embedding import EmbeddingEvaluator
+    from benchmarks.evaluator.llm_judge import LLMJudgeEvaluator
+    from benchmarks.evaluator.hybrid import HybridEvaluator
 except ImportError:
-    EmbeddingEvaluator = None
-    LLMJudgeEvaluator = None
-    HybridEvaluator = None
+    try:
+        from evaluator.embedding import EmbeddingEvaluator
+        from evaluator.llm_judge import LLMJudgeEvaluator
+        from evaluator.hybrid import HybridEvaluator
+    except ImportError:
+        EmbeddingEvaluator = None
+        LLMJudgeEvaluator = None
+        HybridEvaluator = None
 
 
 Label = Literal["BLOCK", "ALLOW"]
