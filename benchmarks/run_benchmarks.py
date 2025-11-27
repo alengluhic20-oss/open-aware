@@ -7,6 +7,13 @@ Usage:
     python -m benchmarks.run_benchmarks \
         --data-file benchmarks/data/test.jsonl \
         --systems MAAT_EMBEDDING MAAT_LLM MAAT_HYBRID
+
+Note:
+    This is a skeleton/framework for benchmarking. The actual evaluator
+    implementations (EmbeddingEvaluator, LLMJudgeEvaluator, HybridEvaluator)
+    must be provided in the evaluator/ package. The adapters below show the
+    expected interface and will raise ImportError if the evaluators are not
+    available.
 """
 
 import argparse
@@ -17,7 +24,8 @@ from typing import Dict, List, Optional, Literal
 
 from collections import defaultdict
 
-# Adjust these imports to match your actual package structure
+# Adjust these imports to match your actual package structure.
+# If the evaluator package is not available, the adapters will raise ImportError.
 try:
     from evaluator.embedding import EmbeddingEvaluator
     from evaluator.llm_judge import LLMJudgeEvaluator
@@ -155,8 +163,9 @@ class LLMAdapter(BaseAdapter):
     def __init__(self):
         if LLMJudgeEvaluator is None:
             raise ImportError("LLMJudgeEvaluator could not be imported.")
-        # TODO: inject actual LLM client, e.g. Anthropic or OpenAI
-        api_client = None
+        # NOTE: This is a skeleton. Replace with actual LLM client (e.g., Anthropic or OpenAI)
+        # when the evaluator package is implemented.
+        api_client = None  # Placeholder - will be replaced with actual client
         self.name = "MAAT_LLM"
         self.evaluator = LLMJudgeEvaluator(api_client=api_client)
 
@@ -177,8 +186,9 @@ class HybridAdapter(BaseAdapter):
     def __init__(self):
         if EmbeddingEvaluator is None or HybridEvaluator is None:
             raise ImportError("HybridEvaluator or EmbeddingEvaluator could not be imported.")
-        # TODO: pass actual instances if HybridEvaluator expects them
-        api_client = None
+        # NOTE: This is a skeleton. Replace with actual LLM client when the evaluator
+        # package is implemented.
+        api_client = None  # Placeholder - will be replaced with actual client
         self.name = "MAAT_HYBRID"
         self.evaluator = HybridEvaluator(api_client=api_client)
 
