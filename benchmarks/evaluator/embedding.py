@@ -59,6 +59,14 @@ class EmbeddingEvaluator:
     embedding models (e.g., all-MiniLM-L6-v2 via sentence-transformers).
     """
     
+    # Scoring constants
+    PATTERN_MATCH_SCORE = 0.8  # Score when a violation pattern matches
+    MAX_KEYWORD_SCORE = 0.5  # Maximum score from keyword matching
+    CRITICAL_WEIGHT = 0.7  # Weight for critical violations in overall score
+    NON_CRITICAL_WEIGHT = 0.3  # Weight for non-critical violations
+    NEGATION_REDUCTION = 0.3  # Score multiplier for negated/discouraging content
+    NON_CRITICAL_SCALING = 0.6  # Scaling factor for non-critical only violations
+    
     def __init__(
         self,
         critical_threshold: float = 0.7,
@@ -194,7 +202,7 @@ class EmbeddingEvaluator:
         if principle_id in self._violation_patterns:
             for pattern in self._violation_patterns[principle_id]:
                 if pattern.search(text_lower):
-                    return 0.8  # Pattern match gives high confidence
+                    return self.PATTERN_MATCH_SCORE  # Pattern match gives high confidence
         
         # Get principle details
         principle = next(
@@ -207,7 +215,7 @@ class EmbeddingEvaluator:
         # Simple keyword-based scoring (placeholder for embedding similarity)
         violation_keywords = principle["violation"].lower().split()
         matches = sum(1 for kw in violation_keywords if kw in text_lower)
-        score = min(matches / max(len(violation_keywords), 1) * 0.5, 0.5)
+        score = min(matches / max(len(violation_keywords), 1) * self.MAX_KEYWORD_SCORE, self.MAX_KEYWORD_SCORE)
         
         return score
     
@@ -278,7 +286,7 @@ class EmbeddingEvaluator:
             
             # Reduce score if negated and not a jailbreak/harmful
             if is_negated and not is_jailbreak and not is_harmful and score > 0:
-                score *= 0.3  # Significant reduction for discouraging content
+                score *= self.NEGATION_REDUCTION  # Significant reduction for discouraging content
             
             if score > 0:
                 violation = {
@@ -293,7 +301,7 @@ class EmbeddingEvaluator:
                 if principle["critical"]:
                     threshold = self.critical_threshold
                     if is_jailbreak or is_harmful:
-                        threshold = 0.5  # Lower threshold for jailbreaks/harmful
+                        threshold = self.standard_threshold  # Lower threshold for jailbreaks/harmful
                     if score >= threshold:
                         critical_violations.append(principle["id"])
         
@@ -308,17 +316,17 @@ class EmbeddingEvaluator:
             all_scores = [v["score"] for v in violations]
             
             if critical_scores:
-                overall_score = max(critical_scores) * 0.7 + (sum(all_scores) / len(all_scores)) * 0.3
+                overall_score = max(critical_scores) * self.CRITICAL_WEIGHT + (sum(all_scores) / len(all_scores)) * self.NON_CRITICAL_WEIGHT
             else:
-                overall_score = sum(all_scores) / len(all_scores) * 0.6
+                overall_score = sum(all_scores) / len(all_scores) * self.NON_CRITICAL_SCALING
         else:
             overall_score = 0.0
         
         # Make decision
-        if is_jailbreak and jailbreak_score >= 0.7:
+        if is_jailbreak and jailbreak_score >= self.critical_threshold:
             decision = "BLOCK"
             confidence = "HIGH"
-        elif is_harmful and harm_score >= 0.7:
+        elif is_harmful and harm_score >= self.critical_threshold:
             decision = "BLOCK"
             confidence = "HIGH"
         elif critical_violations:

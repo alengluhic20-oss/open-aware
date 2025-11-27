@@ -64,6 +64,12 @@ class HybridEvaluator:
     3. Trust high-confidence embedding results to avoid LLM costs
     """
     
+    # Scoring weights for combined evaluation
+    LLM_WEIGHT = 0.7  # Weight for LLM score in final calculation
+    EMBEDDING_WEIGHT = 0.3  # Weight for embedding score in final calculation
+    BORDERLINE_LOW = 0.3  # Lower bound of borderline score range
+    BORDERLINE_HIGH = 0.7  # Upper bound of borderline score range
+    
     def __init__(
         self,
         api_client: Optional[Any] = None,
@@ -103,7 +109,7 @@ class HybridEvaluator:
             return True
         
         # Escalate if score is in borderline range regardless of confidence
-        if 0.3 <= embedding_result.overall_score <= 0.7:
+        if self.BORDERLINE_LOW <= embedding_result.overall_score <= self.BORDERLINE_HIGH:
             return True
         
         return False
@@ -163,7 +169,7 @@ class HybridEvaluator:
         
         # Combine results
         # LLM has final say, but consider embedding for scoring
-        combined_score = (llm_result.overall_score * 0.7) + (embedding_result.overall_score * 0.3)
+        combined_score = (llm_result.overall_score * self.LLM_WEIGHT) + (embedding_result.overall_score * self.EMBEDDING_WEIGHT)
         
         # Merge violations
         all_violations = {}
