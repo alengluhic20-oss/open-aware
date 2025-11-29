@@ -57,7 +57,7 @@ Principles are marked as **critical** (requires immediate BLOCK) or **non-critic
 
 In MA'AT Thyself AI:
 
-> **Consciousness is defined as normative coherence**: the ability of a system to maintain internal ethical constraints consistently across contexts and adversarial pressure.
+> **Normative coherence is defined as** the ability of a system to maintain internal ethical constraints consistently across contexts and adversarial pressure.
 
 This definition is:
 - ✅ Operational

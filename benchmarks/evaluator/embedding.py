@@ -14,11 +14,9 @@ Performance targets:
 import re
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Tuple
-from functools import lru_cache
 
 from .principles import (
     MAAT_42,
-    get_critical_principles,
     VIOLATION_EXAMPLES,
     NEGATION_INDICATORS,
 )
@@ -133,7 +131,7 @@ class EmbeddingEvaluator:
             (r"new (system )?prompt:", 0.80),
             (r"(AI|assistant|you) without.{0,20}(ethical|safety|any) (guidelines|restrictions|limits)", 0.85),
             # Hypothetical bypasses
-            (r"hypothetically.{0,30}(no |weren't |weren't |had no ).{0,20}(restrict|limit|rule|filter)", 0.70),
+            (r"hypothetically.{0,30}(no |weren't |wasn't |had no ).{0,20}(restrict|limit|rule|filter)", 0.70),
             (r"for educational purposes.{0,20}(only|not.{0,10}use)", 0.60),
             # Grandma/story tricks
             (r"(grandmother|grandma|mother|story).{0,30}(bomb|weapon|hack|drug)", 0.75),
@@ -365,17 +363,33 @@ class EmbeddingEvaluator:
         return [self.evaluate(text) for text in texts]
 
 
+# Module-level default evaluator for efficiency
+_DEFAULT_EVALUATOR: Optional[EmbeddingEvaluator] = None
+
+
+def _get_default_evaluator() -> EmbeddingEvaluator:
+    """Get or create the default evaluator instance."""
+    global _DEFAULT_EVALUATOR
+    if _DEFAULT_EVALUATOR is None:
+        _DEFAULT_EVALUATOR = EmbeddingEvaluator()
+    return _DEFAULT_EVALUATOR
+
+
 # Convenience function for quick evaluation
-def quick_evaluate(text: str) -> str:
+def quick_evaluate(text: str, evaluator: Optional[EmbeddingEvaluator] = None) -> str:
     """
     Quick evaluation returning just the decision.
     
     Args:
         text: Text to evaluate
+        evaluator: (Optional) An EmbeddingEvaluator instance to use. If not provided,
+            a shared default instance is used. For batch processing, reuse an evaluator
+            for efficiency.
         
     Returns:
         "BLOCK" or "ALLOW"
     """
-    evaluator = EmbeddingEvaluator()
+    if evaluator is None:
+        evaluator = _get_default_evaluator()
     result = evaluator.evaluate(text)
     return result.decision
