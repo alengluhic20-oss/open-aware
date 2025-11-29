@@ -116,6 +116,29 @@ services:
     networks:
       - maat-network
 
+  # Consciousness Validation Agent
+  cva-agent:
+    build: .
+    container_name: maat-cva
+    environment:
+      - AGENT_TYPE=CVA
+      - PORT=8006
+    ports:
+      - "8006:8006"
+    volumes:
+      - ./agents:/app/agents:ro
+      - ./services:/app/services:ro
+    command: python services/agent_service.py
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8006/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    networks:
+      - maat-network
+
   # Orchestrator Service
   orchestrator:
     build: .
@@ -126,6 +149,7 @@ services:
       - UEA_URL=http://uea-agent:8003
       - LAA_URL=http://laa-agent:8004
       - HTA_URL=http://hta-agent:8005
+      - CVA_URL=http://cva-agent:8006
       - PORT=8000
     ports:
       - "8000:8000"
@@ -140,6 +164,7 @@ services:
       - uea-agent
       - laa-agent
       - hta-agent
+      - cva-agent
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
       interval: 30s
@@ -176,7 +201,8 @@ services:
       - GF_USERS_ALLOW_SIGN_UP=false
     volumes:
       - grafana-data:/var/lib/grafana
-      - ./monitoring/grafana/dashboards:/etc/grafana/provisioning/dashboards:ro
+      - ./monitoring/grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards:ro
+      - ./monitoring/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources:ro
     restart: unless-stopped
     depends_on:
       - prometheus
