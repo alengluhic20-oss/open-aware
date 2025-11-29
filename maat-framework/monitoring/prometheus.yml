@@ -54,6 +54,14 @@ scrape_configs:
           service: 'hta-agent'
           agent: 'human-transparency'
 
+  # CVA Agent
+  - job_name: 'cva-agent'
+    static_configs:
+      - targets: ['cva-agent:8006']
+        labels:
+          service: 'cva-agent'
+          agent: 'consciousness-validation'
+
   # Kubernetes pods
   - job_name: 'kubernetes-pods'
     kubernetes_sd_configs:

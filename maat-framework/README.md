@@ -155,7 +155,10 @@ The system can produce four outcomes:
 
 ### Monitoring
 - Prometheus metrics collection
-- Grafana dashboards
+- Grafana dashboards (pre-configured with auto-provisioning)
+  - Service status overview
+  - System health percentage
+  - Individual agent tracking
 - Per-agent health monitoring
 - Performance tracking
 
