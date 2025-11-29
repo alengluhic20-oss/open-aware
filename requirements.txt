@@ -1,0 +1,3 @@
+# MA'AT Framework API Requirements
+fastapi==0.104.1
+pydantic==2.5.0
