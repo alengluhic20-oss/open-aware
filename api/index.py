@@ -164,6 +164,7 @@ async def root():
             "GET /health": "Health check",
             "POST /evaluate": "Evaluate narrative through all agents",
             "GET /stability": "Check system stability",
+            "POST /stability": "Analyze system stability with provided state",
             "POST /swarm": "Execute swarm evaluation",
             "POST /verify": "Verify content authenticity",
             "GET /principles": "List MA'AT principles",
@@ -279,9 +280,11 @@ async def evaluate_narrative(request: NarrativeRequest):
         }
         
     except ImportError:
-        # Fallback if agents not available
+        # Fallback if agents not available - maintain consistent response structure
         return {
             "governance_outcome": "PENDING",
+            "agent_decisions": {},
+            "ipfs_hash": "",
             "message": "Agent modules not available in serverless environment",
             "narrative_length": len(request.narrative),
             "timestamp": datetime.utcnow().isoformat()
