@@ -445,7 +445,7 @@
                   "text": "DOWN"
                 },
                 "1": {
-                  "color": "purple",
+                  "color": "green",
                   "index": 0,
                   "text": "UP"
                 }
@@ -461,7 +461,7 @@
                 "value": null
               },
               {
-                "color": "purple",
+                "color": "green",
                 "value": 1
               }
             ]

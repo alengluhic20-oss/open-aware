@@ -152,6 +152,8 @@ kubectl apply -f monitoring/prometheus.yml -n monitoring
 
 #### Grafana Setup
 
+Grafana dashboards are automatically provisioned when using Docker Compose. For Kubernetes:
+
 ```bash
 # Deploy Grafana
 helm install grafana grafana/grafana -n monitoring
@@ -162,6 +164,20 @@ kubectl get secret --namespace monitoring grafana -o jsonpath="{.data.admin-pass
 # Port forward to access
 kubectl port-forward -n monitoring svc/grafana 3000:80
 ```
+
+#### Pre-configured Dashboards
+
+The MA'AT Framework includes a pre-configured Grafana dashboard (`maat-overview`) that provides:
+
+- **Service Status Panels**: Real-time status for all 7 agents and orchestrator
+- **System Health Gauge**: Overall health percentage of all services
+- **Active Services Chart**: Time series tracking of service availability
+- **Service Status Table**: Detailed view of all services with status mapping
+- **Individual Service Tracking**: Per-agent uptime visualization
+
+Dashboards are automatically loaded via Grafana provisioning from:
+- `monitoring/grafana/provisioning/dashboards/` - Dashboard JSON files
+- `monitoring/grafana/provisioning/datasources/` - Prometheus datasource configuration
 
 ### 5. Test the Deployment
 
