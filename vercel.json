@@ -1,0 +1,55 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "api/index.py",
+      "use": "@vercel/python"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/docs",
+      "dest": "/api/index.py"
+    },
+    {
+      "src": "/redoc",
+      "dest": "/api/index.py"
+    },
+    {
+      "src": "/openapi.json",
+      "dest": "/api/index.py"
+    },
+    {
+      "src": "/health",
+      "dest": "/api/index.py"
+    },
+    {
+      "src": "/evaluate",
+      "dest": "/api/index.py"
+    },
+    {
+      "src": "/stability",
+      "dest": "/api/index.py"
+    },
+    {
+      "src": "/swarm",
+      "dest": "/api/index.py"
+    },
+    {
+      "src": "/verify",
+      "dest": "/api/index.py"
+    },
+    {
+      "src": "/principles",
+      "dest": "/api/index.py"
+    },
+    {
+      "src": "/agents",
+      "dest": "/api/index.py"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/api/index.py"
+    }
+  ]
+}
