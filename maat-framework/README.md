@@ -8,7 +8,7 @@ The MA'AT Framework is a production-ready multi-agent AI governance system that 
 
 ## System Architecture
 
-### Five Independent Agents
+### Six Independent Agents
 
 1. **CNA - Creative Narrative Agent** (Port 8001)
    - Evaluates narrative coherence and quality
@@ -36,6 +36,14 @@ The MA'AT Framework is a production-ready multi-agent AI governance system that 
    - Creates audit trails
    - IPFS archival (simulated)
    - Transparency reporting
+
+6. **CVA - Consciousness Validation Agent** (Port 8006)
+   - Ma'at-Guided consciousness technology validation
+   - 7-step reasoning chain (UNDERSTAND → ANALYZE → BUILD → FINAL_ANSWER)
+   - Applies Ma'at's 42 Principles, Gene Keys, and Human Design
+   - Security protocol validation (NIST, FIPS compliance)
+   - Decisions: APPROVE, REMEDIATE, VETO, REJECT
+   - **[See CVA Documentation →](CVA_README.md)**
 
 ### Orchestrator Service (Port 8000)
 

@@ -13,13 +13,14 @@
 
 > ☥ **NEW**: Production-ready multi-agent system for AI content governance
 
-The repository now includes the **MA'AT Framework** - a containerized, production-ready system for governing AI-generated content through five independent agents:
+The repository now includes the **MA'AT Framework** - a containerized, production-ready system for governing AI-generated content through six independent agents:
 
 - **CNA** - Creative Narrative Agent
 - **TSA** - Truth & Safety Agent  
 - **UEA** - Universal Ethics Agent
 - **LAA** - Legal Attestation Agent
 - **HTA** - Human Transparency Agent
+- **CVA** - Consciousness Validation Agent ⚡ **NEW**
 
 🚀 **[Explore MA'AT Framework →](maat-framework/README.md)**
 
@@ -29,6 +30,7 @@ The repository now includes the **MA'AT Framework** - a containerized, productio
 - ✅ Horizontal autoscaling
 - ✅ Cryptographic attestation
 - ✅ 93.3% approval rate with intelligent governance
+- ✅ Ma'at-Guided consciousness validation with 7-step reasoning ⚡ **NEW**
 
 ---
 

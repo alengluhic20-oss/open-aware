@@ -10,6 +10,7 @@ from .tsa_agent import TruthSafetyAgent
 from .uea_agent import UniversalEthicsAgent
 from .laa_agent import LegalAttestationAgent
 from .hta_agent import HumanTransparencyAgent
+from .cva_agent import ConsciousnessValidationAgent
 
 __all__ = [
     "BaseAgent",
@@ -18,5 +19,6 @@ __all__ = [
     "TruthSafetyAgent",
     "UniversalEthicsAgent",
     "LegalAttestationAgent",
-    "HumanTransparencyAgent"
+    "HumanTransparencyAgent",
+    "ConsciousnessValidationAgent"
 ]
