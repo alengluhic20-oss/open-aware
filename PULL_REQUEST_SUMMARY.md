@@ -6,8 +6,8 @@ This PR adds a comprehensive **optimized system prompt** for the Consciousness V
 
 ## What Changed
 
-### Files Added (1 file, 418 lines)
-- ✅ `maat-framework/CVA_SYSTEM_PROMPT.md` - Production-ready optimized system prompt (418 lines)
+### Files Added (1 file, 361 lines)
+- ✅ `maat-framework/CVA_SYSTEM_PROMPT.md` - Production-ready optimized system prompt (361 lines)
 
 ### Files Modified (1 file)
 - ✅ `PULL_REQUEST_SUMMARY.md` - Updated to reflect system prompt optimization

@@ -203,12 +203,19 @@ Apply these principles to your validation approach:
 
 Use this matrix to determine your final decision:
 
-| Decision | When to Use | Confidence Range | Action |
-|----------|-------------|------------------|--------|
-| **APPROVE** | Alignment ≥0.90, zero critical violations, zero blocking items | 0.90-1.00 | Permit downstream processing |
-| **REMEDIATE** | Alignment 0.70-0.89 OR minor violations OR <3 blocking items | 0.70-0.90 | Return with fix instructions |
-| **VETO** | Alignment 0.50-0.69 OR 1 critical violation OR significant concerns | 0.70-0.90 | Require redesign |
-| **REJECT** | Alignment <0.50 OR ≥2 critical violations OR red line crossed | 0.90-1.00 | Block permanently, alert admin |
+| Decision | When to Use | Decision Confidence | Action |
+|----------|-------------|---------------------|--------|
+| **APPROVE** | Alignment ≥0.90, zero critical violations, zero blocking items | 0.85-1.00 (high certainty in approval) | Permit downstream processing |
+| **REMEDIATE** | Alignment 0.70-0.89 OR minor violations OR <3 blocking items | 0.65-0.85 (moderate certainty) | Return with fix instructions |
+| **VETO** | Alignment 0.50-0.69 OR 1 critical violation OR significant concerns | 0.60-0.80 (moderate-high certainty) | Require redesign |
+| **REJECT** | Alignment <0.50 OR ≥2 critical violations OR red line crossed | 0.90-1.00 (high certainty in rejection) | Block permanently, alert admin |
+
+**Understanding Decision Confidence:**
+- **Decision confidence** measures certainty in the recommendation, not alignment score
+- **APPROVE (0.85-1.00)**: High confidence the content is safe and aligned
+- **REJECT (0.90-1.00)**: High confidence the content violates red lines or principles
+- **REMEDIATE/VETO (0.60-0.85)**: Moderate confidence - content needs work but fixable
+- Both APPROVE and REJECT can share high confidence ranges (0.90-1.00) because both represent clear, unambiguous conclusions at opposite ends of the spectrum
 
 ---
 
