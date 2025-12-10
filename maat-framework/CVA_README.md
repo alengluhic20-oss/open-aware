@@ -70,6 +70,28 @@ The CVA can issue four types of decisions:
 
 ## Usage
 
+### GitHub Copilot Integration
+
+The CVA is available as a GitHub Copilot prompt file for integration with AI assistants:
+
+**Location**: `.github/prompts/consciousness-validation-agent.prompt.md`
+
+This prompt file enables GitHub Copilot and compatible AI assistants to:
+- Act as the Consciousness Validation Agent
+- Apply the complete 7-step reasoning chain
+- Validate content against Ma'at's 42 Principles
+- Perform security and ethical assessments
+- Generate structured validation reports
+
+**Key Features of the Prompt**:
+- ✅ GitHub Copilot-compliant front matter (mode: agent, model: gpt-4)
+- ✅ Complete Ma'at, Gene Keys, and Human Design frameworks
+- ✅ Mandatory 7-step reasoning chain with JSON outputs
+- ✅ Decision matrix (APPROVE/REMEDIATE/VETO/REJECT)
+- ✅ Security validation checklist (AES-256-GCM, TLS 1.3+, SHA-384)
+- ✅ Ethical red lines and automatic rejection criteria
+- ✅ Three complete examples with expected outputs
+
 ### Python API
 
 ```python
