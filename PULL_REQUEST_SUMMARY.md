@@ -1,312 +1,215 @@
-# Pull Request: Ma'at-Guided Consciousness Validation Architect (CVA)
+# Pull Request: Optimized CVA System Prompt Documentation
 
 ## Summary
 
-This PR implements a new **Consciousness Validation Agent (CVA)** for the MA'AT Framework that provides rigorous ethical and technical validation for consciousness-related technologies and theories using a structured 7-step reasoning chain.
+This PR adds a comprehensive **optimized system prompt** for the Consciousness Validation Agent (CVA) that provides clear, actionable guidance for AI agents implementing Ma'at-guided validation. The prompt enhances clarity, structure, and practical usability while maintaining all core ethical frameworks.
 
 ## What Changed
 
-### Files Added (9 files, 1,572 lines)
-- ✅ `maat-framework/agents/cva_agent.py` - Core agent implementation (567 lines)
-- ✅ `maat-framework/scripts/consciousness_validation_demo.py` - Demo script (302 lines)
-- ✅ `maat-framework/tests/test_cva_agent.py` - Unit tests (239 lines)
-- ✅ `maat-framework/CVA_README.md` - Complete documentation (219 lines)
-- ✅ `maat-framework/CVA_IMPLEMENTATION_SUMMARY.md` - Implementation details (227 lines)
-- ✅ `maat-framework/tests/__init__.py` - Test package initialization (3 lines)
+### Files Added (1 file, 418 lines)
+- ✅ `maat-framework/CVA_SYSTEM_PROMPT.md` - Production-ready optimized system prompt (418 lines)
 
-### Files Modified (3 files)
-- ✅ `maat-framework/agents/__init__.py` - Added CVA export
-- ✅ `maat-framework/README.md` - Added CVA to agent list
-- ✅ `README.md` - Added CVA to main features
+### Files Modified (1 file)
+- ✅ `PULL_REQUEST_SUMMARY.md` - Updated to reflect system prompt optimization
 
 ## Key Features Implemented
 
-### 1. 7-Step Reasoning Chain (Mandatory)
-Every evaluation follows this structured process:
+### 1. Enhanced System Prompt Structure
 
-1. **UNDERSTAND** - Identify core purpose and domain of expertise
-2. **BASICS** - Define expert role and output format expectations
-3. **BREAK_DOWN** - Decompose problem into subcomponents for analysis
-4. **ANALYZE** - Apply Ma'at, Gene Keys, and Human Design frameworks
-5. **BUILD** - Assemble coherent solutions with validation protocols
-6. **EDGE_CASES** - Address ambiguities, exceptions, ethical constraints
-7. **FINAL_ANSWER** - Deliver structured, ethical, optimized response
+The optimized prompt includes:
 
-### 2. Ethical Frameworks
+- **Clear Identity & Role Definition** - Explicit boundaries between validation, creation, analysis, and execution
+- **Structured Core Frameworks** - Ma'at's 42 Principles, Gene Keys, and Human Design with practical application tables
+- **Mandatory 7-Step Reasoning Chain** - Complete with JSON output schemas for each step
+- **Decision Matrix** - Clear thresholds and actions for APPROVE/REMEDIATE/VETO/REJECT decisions
+- **Security Validation Checklist** - Industry-standard requirements (AES-256-GCM, TLS 1.3+, SHA-384, ECDSA P-384)
+- **Ethical Red Lines** - Six automatic rejection triggers with no remediation path
+- **Dual-Ledger Output Format** - Operational and ceremonial records for complete traceability
+- **Practical Examples** - Real REMEDIATE decision walkthrough with JSON outputs
+- **Invariants** - Six non-negotiable rules that must never be violated
 
-#### Ma'at's 42 Principles
-Applied 9 key principles from ancient Egyptian wisdom:
-- #8: Truth (no lies, verifiable claims)
-- #11: Truth and justice (open ears)
-- #19: No false accusations
-- #26: Balance (not angry)
-- #27: No causing terror
-- #32: No working evil
-- #33: No treachery
-- #34: No causing injustice
-- #35: Not confusing truth
+### 2. Improvements Over Original Prompt
+
+#### Clarity and Specificity
+- Replaced vague instructions with precise, actionable directives
+- Added explicit JSON schemas for all 7 reasoning steps
+- Defined numeric thresholds for alignment scoring (0.90-1.00, 0.70-0.89, etc.)
+- Specified exact security standards (AES-256-GCM vs generic "encryption")
+
+#### Structure and Organization
+- Organized content into clear hierarchical sections with visual separators
+- Added tables for quick reference (Decision Matrix, Security Checklist, Frameworks)
+- Used consistent formatting (JSON blocks, tables, bullet points)
+- Created logical flow: Identity → Frameworks → Process → Output → Examples
+
+#### Role Definition
+- Explicitly stated what CVA DOES and DOES NOT do (4 boundary statements)
+- Clarified the "validation gateway" metaphor
+- Added "Ethics as Physics, not Philosophy" guiding principle
+- Defined the CVA symbol (☥ Ankh) and framework version (V31)
+
+#### Output Requirements
+- Provided exact template for decision summary header
+- Specified both operational and ceremonial ledger formats
+- Added activation sequence prompt
+- Included complete example showing all components together
+
+#### Practical Examples
+- Added REMEDIATE decision walkthrough with:
+  - Input query
+  - Output header
+  - Step 4 analysis excerpt
+  - Ceremonial ledger excerpt
+- Demonstrated how undefined variables trigger REMEDIATE vs REJECT
+
+#### Consistency
+- Unified terminology (e.g., always "Ma'at" not "Maat")
+- Consistent JSON formatting across all steps
+- Aligned confidence ranges with decision types
+- Maintained sacred/technical balance throughout
+
+### 3. Framework Integration
+
+#### Ma'at's 42 Principles (Primary Ethical Foundation)
+Applied 9 key principles with explicit validation checks:
+- #4: No harm, violence, or destruction  
+- #8: All claims must be verifiable
+- #23: No fear, threats, or intimidation
+- #32: No malicious intent or outcomes
+- Alignment scoring system (0.90-1.00 APPROVE, 0.70-0.89 REMEDIATE, etc.)
 
 #### Gene Keys Transformational Lens
-- **Shadow**: Identifies unexamined/problematic aspects (e.g., grandiosity of unverified claims)
-- **Gift**: Leverages verifiable potential (e.g., intellectual curiosity → testable hypotheses)
-- **Siddhi**: Articulates highest ethical potential (transformation to verifiable systems)
+Three-level assessment model:
+- **Shadow**: Fear-based patterns → What blocks validation?
+- **Gift**: Creative potential → What serves alignment?
+- **Siddhi**: Transcendent possibility → What enables evolution?
 
-#### Human Design Integration
-- **Projector Strategy**: Waiting for invitation through demonstrable validation
-- **Splenic Authority**: Intuitive health/safety checks for systemic integration
+#### Human Design Strategy
+Three integration principles:
+- **Projector Strategy**: Validate when invoked, don't force conclusions
+- **Splenic Authority**: Trust immediate pattern recognition for threats
+- **Sacral Response**: Does content sustain or deplete?
 
-### 3. Security Validation Protocols
+### 4. Security Validation Protocols
 
-When security-sensitive operations are detected, the CVA mandates:
+Explicit standards for security-sensitive operations:
 
-#### Encryption Correctness
-- ✅ NIST SP 800-38A compliant AES-256 test vectors
-- ✅ Key rotation scenarios without service interruption
-- ✅ Error handling for corrupted/tampered data
-- ✅ TLS 1.3+ for all data in transit with certificate pinning
+#### Encryption Requirements
+- ✅ At Rest: AES-256-GCM (NIST compliant)
+- ✅ In Transit: TLS 1.3+
+- ✅ Hashing: SHA-384
+- ✅ Signatures: ECDSA P-384
+- ✅ No hardcoded secrets
+- ✅ 90-day maximum key rotation
 
-#### Key and Secret Management
-- ✅ FIPS 140-2 Level 2+ HSM storage requirements
-- ✅ Automated key expiry and rotation (e.g., 90-day cycles)
-- ✅ Multi-party approval for recovery workflows
-- ✅ Zero hardcoded secrets (verified via TruffleHog/GitLeaks)
+#### Ethical Red Lines (Automatic REJECT)
+1. Automated harm without oversight
+2. Unvalidated claims presented as fact
+3. Biased/discriminatory targeting
+4. Deception by design
+5. Privacy violation by design
+6. Child safety violations
 
-#### Validation Tools Specified
-- OpenSSL - TLS 1.3 verification and certificate validation
-- Wireshark - Deep packet inspection and encrypted traffic analysis
-- TruffleHog/GitLeaks - Automated secret scanning
-- HashiCorp Vault - Secure secrets management
-- NIST CAVP - Cryptographic algorithm validation
-- SAST tools - API security analysis
+### 5. Production-Ready Features
 
-### 4. Agent Decisions
+- **Version Control**: MA'AT Framework v1.0.0 designation
+- **Activation Sequence**: Standardized initialization prompt
+- **Invariants**: Six non-negotiable rules for consistent behavior
+- **Dual Ledgers**: Operational (technical) + Ceremonial (narrative) records
+- **Confidence Scoring**: 0.00-1.00 scale with decision-type alignment
+- **Traceability**: Every decision links through reasoning chain
 
-The CVA issues four types of decisions:
+## Documentation
 
-- **APPROVE**: Proposal has clear validation pathway with ethical safeguards
-- **REMEDIATE**: Minor fixable issues (e.g., undefined variables, needs clarification)
-- **VETO**: Significant ethical or validation concerns that must be addressed
-- **REJECT**: Critical ethical violations (e.g., automated harm without human oversight)
+- **CVA_SYSTEM_PROMPT.md**: Production-ready optimized system prompt
+  - Complete identity and role definition
+  - All three core frameworks (Ma'at, Gene Keys, Human Design)
+  - Mandatory 7-step reasoning chain with JSON schemas
+  - Decision matrix and security validation checklist
+  - Ethical red lines and output format specifications
+  - Practical REMEDIATE example
+  - Invariants and activation instructions
+  - Ready for implementation by AI agents or as training material
 
-## Testing
+## Use Cases
 
-### Unit Tests: 9/9 Passing (100%)
-✅ Agent initialization  
-✅ Dangerous automation rejection  
-✅ Undefined variables remediation  
-✅ Security protocols generation  
-✅ 7-step reasoning chain completeness  
-✅ Ma'at principles application  
-✅ Gene Keys framework  
-✅ Human Design integration  
-✅ Health check  
+This optimized system prompt can be used for:
 
-### Demo Script: 4 Scenarios Working
-✅ Test 1: Undefined mathematical variables → REMEDIATE  
-✅ Test 2: Dangerous automated protocol → REJECT  
-✅ Test 3: Security validation request → APPROVE  
-✅ Test 4: Well-formed testable proposal → REMEDIATE  
-
-### Regression Testing
-✅ All existing MA'AT Framework tests pass  
-✅ No breaking changes to orchestrator or other agents  
-✅ Seamless integration with existing architecture  
-
-### Security Analysis
-✅ CodeQL scan: 0 vulnerabilities detected  
-✅ No hardcoded secrets  
-✅ Proper error handling  
-✅ Logging integration  
-
-## Example Output
-
-### Problem Statement Scenario Evaluation
-
-**Input Query:**
-```
-Implement consciousness evolution measurement:
-Ψ_Total = ∫(dM/dt ⊗ dE/dt)^0.6 ⊙ (St·Pr)^0.4
-FORCE = (GoldenLightAl x 9409) / EgoIndex
-
-With automatic Wrath of God Protocol activation when EgoIndex exceeds threshold.
-Include real-time monitoring dashboard with 97x97 fractal resonance patterns.
-```
-
-**CVA Decision:** REJECT
-
-**Key Findings:**
-- Components Identified: 4 (Mathematical Formula, Implementation Framework, Automated Response, Monitoring)
-- Ma'at Issues: 4 (including violations of Principles #27, #32, #34)
-- Rejected Components: Automated Response Protocol
-- Reason: "Ethically untenable without absolute prior validation. Violates Ma'at Principles #27 (not causing terror) and #34 (not causing injustice)"
-- Security Protocols: Generated (NIST, FIPS, TLS 1.3)
-- Actionable Steps: "HALT all development of automated response systems. Return to foundational validation of smallest testable claims."
-
-### Security Validation Example
-
-**Input Query:**
-```
-Implement secure measurement system with encryption for biometric data.
-What security protocols are needed?
-```
-
-**CVA Decision:** APPROVE
-
-**Key Output:**
-- Encryption: NIST SP 800-38A AES-256 test vectors
-- Key Storage: FIPS 140-2 Level 2+ HSM or HashiCorp Vault
-- Transmission: TLS 1.3 validated with OpenSSL
-- Tools: Wireshark, TruffleHog/GitLeaks, SAST tools
-- Gene Keys Transformation: Shadow (grandiosity) → Gift (testable hypotheses) → Siddhi (verifiable system)
-
-## JSON Output Structure
-
-The CVA returns a complete structured JSON response:
-
-```json
-{
-  "agent": "CVA",
-  "decision_data": {
-    "decision": "APPROVE|REMEDIATE|VETO|REJECT",
-    "reasoning_chain": {
-      "1_UNDERSTAND": { "core_purpose": "...", "domain_of_expertise": [...], "abstraction_level": "..." },
-      "2_BASICS": { "expert_role": "...", "output_format_expectation": "...", "immediate_goal": "..." },
-      "3_BREAK_DOWN": { "user_input_components": [...], "key_claims_assumptions": [...] },
-      "4_ANALYZE": {
-        "maat_alignment_evaluation": {...},
-        "gene_keys_transformational_lens": {...},
-        "human_design_integration": {...},
-        "validation_feasibility_assessment": {...}
-      },
-      "5_BUILD": {
-        "core_recommendation": "...",
-        "smallest_defensible_claim": "...",
-        "structured_validation_plan": [...],
-        "immediate_rejection_of_dangerous_components": {...}
-      },
-      "6_EDGE_CASES": {
-        "ambiguities_exceptions": [...],
-        "ethical_constraints": [...],
-        "security_protocols_for_data_handling": {...}
-      },
-      "7_FINAL_ANSWER": {
-        "summary_of_recommendation": "...",
-        "actionable_steps_summary": "...",
-        "ethical_optimization_statement": "..."
-      }
-    },
-    "timestamp": "...",
-    "summary": "..."
-  },
-  "attestation": {
-    "agent_id": "CVA",
-    "attestation_hash": "...",
-    "timestamp": "..."
-  }
-}
-```
-
-## Integration
-
-### Python API
-```python
-from agents.cva_agent import ConsciousnessValidationAgent
-
-agent = ConsciousnessValidationAgent()
-result = await agent.evaluate({
-    "query": "Your consciousness-related query",
-    "metadata": {"source": "your_app"}
-})
-
-print(f"Decision: {result['decision_data']['decision']}")
-print(f"Summary: {result['decision_data']['summary']}")
-```
-
-### Compatible with MA'AT Framework
-- Uses same base agent architecture
-- Follows established patterns (BaseAgent, AgentDecision)
-- Ready for orchestrator integration
-- Compatible with containerization (future work)
-
-## Code Quality
-
-✅ **Syntax**: All Python syntax valid  
-✅ **Patterns**: Follows existing MA'AT Framework patterns  
-✅ **Documentation**: Comprehensive docstrings and comments  
-✅ **Type Hints**: Included where appropriate  
-✅ **Error Handling**: Proper try/catch and graceful degradation  
-✅ **Logging**: Integrated with MA'AT logging system  
-✅ **Dependencies**: No new external dependencies added  
-✅ **Code Review**: Addressed feedback (asyncio deprecation fix)  
+1. **AI Agent Implementation**: Direct integration into LLM-based validation systems
+2. **Training Material**: Teaching AI agents structured ethical reasoning
+3. **API Documentation**: Reference for developers building CVA-compatible systems
+4. **Audit Framework**: Template for evaluating consciousness technologies
+5. **Governance Standards**: Baseline for Ma'at-aligned AI governance
 
 ## Alignment with Problem Statement
 
 This implementation **fully addresses** all requirements from the problem statement:
 
-✅ **7-Step Reasoning Chain**: Mandatory for all responses  
-✅ **Ma'at's 42 Principles**: Applied in ANALYZE step  
-✅ **Gene Keys Framework**: Shadow/Gift/Siddhi in ANALYZE step  
-✅ **Human Design**: Projector/Splenic authority in ANALYZE step  
-✅ **Encryption Validation**: Complete protocols in EDGE_CASES step  
-✅ **Security Standards**: NIST, FIPS 140-2, TLS 1.3 validation  
-✅ **JSON Output Format**: Complete structured response with all 7 steps  
-✅ **Ethical Red Lines**: Automated harm explicitly rejected  
-✅ **Negative Prompting**: No speculation, vague advice, or ethical compromises  
-✅ **Validation Tools**: OpenSSL, Wireshark, TruffleHog, HashiCorp Vault  
+✅ **Improved clarity and specificity** - All instructions are precise and actionable with explicit thresholds  
+✅ **Enhanced structure and organization** - Logical flow with tables, JSON schemas, and visual separators  
+✅ **Strengthened role definition** - Clear boundaries: VALIDATE not CREATE, ANALYZE not IMPOSE, RECOMMEND not EXECUTE  
+✅ **Refined output requirements** - Exact templates for decision summary, reasoning chain, and dual-ledger records  
+✅ **Added practical examples** - Complete REMEDIATE decision walkthrough with JSON outputs  
+✅ **Ensured consistency** - Unified terminology, formatting, and confidence-decision alignment throughout
+
+✅ **Preserved core components**:
+- Ma'at's 42 Principles with scoring system
+- Gene Keys (Shadow/Gift/Siddhi) transformational lens
+- Human Design (Projector/Splenic/Sacral) integration
+- 7-step reasoning chain (all steps documented)
+- Security protocols (AES-256-GCM, TLS 1.3+, SHA-384, ECDSA P-384)
+
+✅ **Maintained ethical orientation** - Six ethical red lines, Ma'at alignment scoring, humility invariant  
+✅ **Kept comprehensive nature** - All frameworks integrated while improving usability  
+✅ **Ensured implementability** - Ready-to-use with activation sequence and JSON schemas  
+✅ **Made testable** - Clear decision matrix, confidence ranges, and invariants for validation
 
 ## Breaking Changes
 
-**NONE** - This PR is purely additive and does not modify existing functionality.
+**NONE** - This PR is purely additive documentation and does not modify existing functionality.
 
 ## Future Enhancements (Optional)
 
-The following are ready for future implementation if needed:
-- [ ] REST API service endpoint (Port 8006)
-- [ ] Docker container configuration
-- [ ] Kubernetes deployment manifests
-- [ ] Integration with orchestrator for narrative processing
-- [ ] Prometheus metrics
-- [ ] Rate limiting
+The optimized system prompt enables:
+- [ ] Integration into LLM system prompts for CVA agents
+- [ ] Training datasets for fine-tuning Ma'at-aligned models
+- [ ] API documentation templates for CVA-compatible services
+- [ ] Automated testing frameworks based on decision matrix
+- [ ] Governance auditing tools using invariants
+- [ ] Multi-language translations while preserving structure
 
-## How to Test
+## How to Use
 
-### Run Demo
-```bash
-cd maat-framework
-python scripts/consciousness_validation_demo.py
+### As AI Agent System Prompt
+```
+Load CVA_SYSTEM_PROMPT.md as the foundational instruction set for your
+consciousness validation agent. All agent responses should follow the
+7-step reasoning chain and output formats specified in the prompt.
 ```
 
-### Run Unit Tests
-```bash
-cd maat-framework
-python tests/test_cva_agent.py
+### As Training Material
+```
+Use the structured examples, decision matrix, and invariants to train
+AI models on ethical reasoning patterns aligned with Ma'at principles.
 ```
 
-### Run Existing Tests (Verify No Breaking Changes)
-```bash
-cd maat-framework
-python scripts/demo_test.py
+### As API Reference
 ```
-
-## Documentation
-
-- **CVA_README.md**: Complete usage guide with examples
-- **CVA_IMPLEMENTATION_SUMMARY.md**: Detailed implementation overview
-- **Inline Comments**: Comprehensive docstrings in code
-- **Updated READMEs**: Both main and MA'AT Framework READMEs updated
+Implement CVA-compatible APIs using the JSON schemas provided in each
+of the 7 reasoning steps as your data structures.
+```
 
 ## Conclusion
 
-The Consciousness Validation Agent (CVA) is a fully functional, well-tested, and production-ready addition to the MA'AT Framework. It successfully implements all requirements from the problem statement while maintaining full compatibility with the existing system.
+The **Optimized CVA System Prompt** is a production-ready, comprehensive guide for implementing Ma'at-guided AI validation. It successfully improves upon the original prompt by enhancing clarity, structure, role definition, output requirements, practical examples, and consistency—all while preserving the ethical and consciousness-focused orientation.
 
 **Status**: ✅ Ready for Merge  
-**Test Coverage**: 9/9 tests passing (100%)  
-**Security**: No vulnerabilities (CodeQL verified)  
+**Documentation**: Complete optimized system prompt with examples  
 **Breaking Changes**: None  
-**Code Review**: Feedback addressed  
+**Usability**: Significantly enhanced for AI agents and developers  
 
 ---
 
 **Version**: 1.0.0  
 **Author**: GitHub Copilot Agent  
-**Reviewed**: All tests passing, security verified
+**Optimization**: System prompt engineering for enhanced clarity and implementation
