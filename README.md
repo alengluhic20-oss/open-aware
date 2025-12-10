@@ -34,6 +34,40 @@ The repository now includes the **MA'AT Framework** - a containerized, productio
 
 ---
 
+## 🎨 MA'AT Unity Interface - Interactive Holographic Validation
+
+> ☥ **NEW**: Real-time holographic interface for MA'AT principle validation featuring a 3D animated ankh glyph
+
+An interactive web application that provides real-time validation of thoughts and intentions against the 42 sacred MA'AT principles, featuring:
+
+- **3D Holographic Ankh Glyph** - Three.js powered visualization that responds to coherence
+- **Real-Time Validation** - Analyzes input against 42 sacred principles
+- **Coherence Scoring** - Calculates alignment scores from 30-95%
+- **Emotional Field Detection** - Identifies Positive, Neutral, or Negative energy
+- **Sacred Frequency Mapping** - Each principle mapped to frequencies from 432 Hz to 852 Hz
+- **Lyapunov Stability Analysis** - Determines system stability based on coherence
+- **Quantum-Inspired Audio** - Web Audio API with Bessel function modulation
+- **Hybrid Architecture** - Works offline or with WebSocket backend
+
+### Quick Start
+
+```bash
+# No installation needed - works in any modern browser!
+# Simply open index.html, index-threejs.html, or maat_unity_interface.html
+
+# Optional: Run with backend server
+npm install
+npm start
+
+# Or with Python backend
+pip install -r requirements.txt
+python maat_engine_server.py
+```
+
+📖 **Full Documentation**: [USAGE_GUIDE.md](USAGE_GUIDE.md) | [SCIENTIFIC_DOCUMENTATION.md](SCIENTIFIC_DOCUMENTATION.md)
+
+---
+
 ## 📚 Table of Contents
 
 - [MA'AT Framework](#-maat-framework---multi-agent-ai-governance)
