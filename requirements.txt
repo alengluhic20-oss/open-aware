@@ -1,3 +1,5 @@
 # MA'AT Framework API Requirements
-fastapi==0.104.1
-pydantic==2.5.0
+fastapi==0.115.0
+uvicorn[standard]==0.32.0
+websockets==13.1
+pydantic==2.10.0

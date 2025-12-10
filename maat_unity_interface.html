@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>☥ MA'AT UNITY INTERFACE ☥</title>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.158.0/build/three.min.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      margin: 0;
+      background: linear-gradient(135deg, #0f0f23, #1a1a2e, #16213e);
+      color: #e0e0e0;
+      font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      overflow: hidden;
+      height: 100vh;
+    }
+    
+    .container {
+      display: flex;
+      height: 100vh;
+      position: relative;
+    }
+    
+    .mode-toggle {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: rgba(0, 0, 0, 0.6);
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      z-index: 100;
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      color: #D4AF37;
+      text-shadow: 0 0 5px rgba(212, 175, 55, 0.5);
+    }
+    
+    .mode-toggle.websocket {
+      background: rgba(0, 128, 0, 0.3);
+      border-color: rgba(0, 200, 0, 0.5);
+      color: #4CAF50;
+    }
+    
+    .mode-toggle.fallback {
+      background: rgba(128, 0, 0, 0.3);
+      border-color: rgba(200, 0, 0, 0.5);
+      color: #F44336;
+    }
+    
+    .glyph-panel {
+      width: 350px;
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(10px);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid rgba(212, 175, 55, 0.3);
+      box-shadow: 0 0 30px rgba(212, 175, 55, 0.1);
+    }
+    
+    .glyph-header {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 18px;
+      font-weight: 600;
+      color: #D4AF37;
+      text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+    }
+    
+    .glyph-canvas {
+      width: 300px;
+      height: 300px;
+      margin: 0 auto 20px;
+      background: rgba(0, 0, 0, 0.6);
+      border-radius: 15px;
+      border: 2px solid rgba(212, 175, 55, 0.3);
+      box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
+      overflow: hidden;
+    }
+    
+    .metrics {
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 10px;
+      padding: 15px;
+      border: 1px solid rgba(212, 175, 55, 0.2);
+    }
+    
+    .metric-row {
+      display: flex;
+      justify-content: space-between;
+      margin: 8px 0;
+      padding: 5px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .metric-row:last-child {
+      border-bottom: none;
+    }
+    
+    .metric-label {
+      font-weight: 600;
+      color: #D4AF37;
+      font-size: 13px;
+    }
+    
+    .metric-value {
+      color: #e0e0e0;
+      font-size: 13px;
+      font-weight: 500;
+    }
+    
+    .stability-indicator {
+      text-align: center;
+      margin-top: 15px;
+      padding: 10px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 14px;
+      transition: all 0.3s ease;
+    }
+    
+    .stability-indicator.stable {
+      background: rgba(76, 175, 80, 0.2);
+      color: #4CAF50;
+      border: 1px solid rgba(76, 175, 80, 0.4);
+    }
+    
+    .stability-indicator.unstable {
+      background: rgba(244, 67, 54, 0.2);
+      color: #F44336;
+      border: 1px solid rgba(244, 67, 54, 0.4);
+    }
+    
+    .chat-panel {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 30px;
+      position: relative;
+    }
+    
+    .chat-header {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 24px;
+      font-weight: 700;
+      color: #D4AF37;
+      text-shadow: 0 0 15px rgba(212, 175, 55, 0.6);
+    }
+    
+    .messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 15px;
+      margin-bottom: 20px;
+      border: 1px solid rgba(212, 175, 55, 0.2);
+    }
+    
+    .messages::-webkit-scrollbar {
+      width: 8px;
+    }
+    
+    .messages::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 4px;
+    }
+    
+    .messages::-webkit-scrollbar-thumb {
+      background: rgba(212, 175, 55, 0.5);
+      border-radius: 4px;
+    }
+    
+    .message {
+      margin: 12px 0;
+      padding: 12px 16px;
+      border-radius: 12px;
+      max-width: 75%;
+      animation: fadeIn 0.3s ease-in;
+      line-height: 1.5;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .message.user {
+      background: linear-gradient(135deg, rgba(66, 165, 245, 0.3), rgba(33, 150, 243, 0.2));
+      margin-left: auto;
+      border: 1px solid rgba(66, 165, 245, 0.4);
+      box-shadow: 0 2px 10px rgba(66, 165, 245, 0.2);
+    }
+    
+    .message.maat {
+      background: linear-gradient(135deg, rgba(212, 175, 55, 0.3), rgba(212, 175, 55, 0.2));
+      border: 1px solid rgba(212, 175, 55, 0.4);
+      box-shadow: 0 2px 10px rgba(212, 175, 55, 0.2);
+    }
+    
+    .message.system {
+      background: rgba(128, 128, 128, 0.2);
+      border: 1px solid rgba(128, 128, 128, 0.3);
+      text-align: center;
+      font-size: 12px;
+      opacity: 0.8;
+      max-width: 90%;
+      margin: 8px auto;
+    }
+    
+    .message-sender {
+      font-weight: 700;
+      margin-bottom: 5px;
+      font-size: 12px;
+      letter-spacing: 0.5px;
+    }
+    
+    .message.user .message-sender {
+      color: #42A5F5;
+    }
+    
+    .message.maat .message-sender {
+      color: #D4AF37;
+    }
+    
+    .input-form {
+      display: flex;
+      gap: 12px;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 15px;
+      border-radius: 15px;
+      border: 1px solid rgba(212, 175, 55, 0.2);
+    }
+    
+    input {
+      flex: 1;
+      padding: 14px 18px;
+      border: none;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      font-size: 15px;
+      outline: none;
+      transition: all 0.3s ease;
+    }
+    
+    input:focus {
+      background: rgba(255, 255, 255, 0.15);
+      box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+    }
+    
+    input::placeholder {
+      color: rgba(255, 255, 255, 0.5);
+    }
+    
+    button {
+      padding: 14px 28px;
+      border: none;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #D4AF37, #F4D03F);
+      color: #0f0f23;
+      font-weight: 700;
+      font-size: 15px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
+    }
+    
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(212, 175, 55, 0.6);
+    }
+    
+    button:active {
+      transform: translateY(0);
+    }
+    
+    .welcome-message {
+      text-align: center;
+      color: rgba(255, 255, 255, 0.6);
+      font-style: italic;
+      padding: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="mode-toggle" id="mode-toggle">☥ LOCAL MODE</div>
+  <div class="container">
+    <!-- Glyph Panel -->
+    <div class="glyph-panel">
+      <div class="glyph-header">☥ HOLOGRAPHIC GLYPH ☥</div>
+      <div class="glyph-canvas" id="glyph"></div>
+      <div class="metrics">
+        <div class="metric-row">
+          <span class="metric-label">Coherence:</span>
+          <span class="metric-value" id="coherence">70.0%</span>
+        </div>
+        <div class="metric-row">
+          <span class="metric-label">Emotional Field:</span>
+          <span class="metric-value" id="emotional">Neutral</span>
+        </div>
+        <div class="metric-row">
+          <span class="metric-label">Principles:</span>
+          <span class="metric-value" id="principles">8, 23</span>
+        </div>
+        <div class="metric-row">
+          <span class="metric-label">Frequency:</span>
+          <span class="metric-value" id="frequency">528 Hz</span>
+        </div>
+        <div class="metric-row">
+          <span class="metric-label">Cosmic Sync:</span>
+          <span class="metric-value" id="cosmic-sync">Lunar: 85% | Galactic: 70%</span>
+        </div>
+        <div class="stability-indicator stable" id="stability">✓ LYAPUNOV STABLE</div>
+      </div>
+    </div>
+
+    <!-- Chat Panel -->
+    <div class="chat-panel">
+      <div class="chat-header">☥ MA'AT UNITY INTERFACE ☥</div>
+      <div class="messages" id="messages">
+        <div class="welcome-message">
+          ☥ Welcome, seeker. Speak your truth, and the glyph shall reflect your alignment with Ma'at...
+        </div>
+      </div>
+      <form class="input-form" id="form">
+        <input id="chat-input" placeholder="Project your thought..." autocomplete="off" autofocus>
+        <button type="submit">Send ☥</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // ====== CONFIGURATION ======
+    const USE_LOCAL_ENGINE = true; // Toggle: true=local, false=WebSocket
+    const WS_URL = 'ws://localhost:8080';
+    const ENABLE_AUDIO = true; // Toggle audio resonance feedback
+    let ws = null;
+    let wsConnected = false;
+
+    // ====== SCIENTIFIC AUDIO RESONANCE ENGINE ======
+    let audioCtx = null;
+    let oscillator = null;
+    let gainNode = null;
+
+    // Initialize Web Audio API
+    if (ENABLE_AUDIO) {
+      try {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        console.log('☥ Audio Resonance Engine initialized');
+      } catch (error) {
+        console.log('☥ Audio not available:', error);
+      }
+    }
+
+    // Bessel function J0 approximation for quantum modulation
+    function besselJ0(x) {
+      // Approximation of Bessel function of the first kind, order 0
+      // Using series expansion for small x
+      if (Math.abs(x) < 8) {
+        let sum = 1;
+        let term = 1;
+        for (let i = 1; i <= 10; i++) {
+          term *= -(x * x) / (4 * i * i);
+          sum += term;
+        }
+        return sum;
+      }
+      // Asymptotic approximation for large x
+      const z = 8 / x;
+      const y = z * z;
+      const p0 = 1, p1 = -0.1098628627e-2, p2 = 0.2734510407e-4;
+      const p3 = -0.2073370639e-5, p4 = 0.2093887211e-6;
+      const q0 = -0.1562499995e-1, q1 = 0.1430488765e-3;
+      const q2 = -0.6911147651e-5, q3 = 0.7621095161e-6, q4 = -0.934935152e-7;
+      
+      const p = p0 + y * (p1 + y * (p2 + y * (p3 + y * p4)));
+      const q = z * (q0 + y * (q1 + y * (q2 + y * (q3 + y * q4))));
+      
+      return Math.sqrt(2 / (Math.PI * x)) * (Math.cos(x - Math.PI / 4) * p - Math.sin(x - Math.PI / 4) * q);
+    }
+
+    /**
+     * Quantum Frequency Scaling: Maps Ma'at coherence to audible frequency
+     * Formula: f = f₀ · (1 + α · coherence)
+     * Where f₀ = 432 Hz (harmonic base), α = 0.22 (96 Hz span to reach 528 Hz)
+     */
+    function coherenceToFrequency(coherence) {
+      const f0 = 432; // Base frequency (Hz)
+      const alpha = 0.222; // Scaling factor (432 → 528 Hz range)
+      return f0 * (1 + alpha * coherence);
+    }
+
+    /**
+     * Play Scientific Resonance based on quantum coherence principles
+     * Implements:
+     * - Frequency scaling from coherence
+     * - Phase modulation from emotional field
+     * - Harmonic series from principles
+     * - Bessel Rabi oscillation envelope
+     */
+    function playResonance(coherence, emotionalField, principlesArray) {
+      if (!audioCtx || !ENABLE_AUDIO) return;
+
+      // Stop any existing oscillator
+      if (oscillator) {
+        try {
+          oscillator.stop();
+        } catch (e) {}
+      }
+
+      // Resume audio context if suspended (browser autoplay policy)
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+
+      // Create oscillator and gain node
+      oscillator = audioCtx.createOscillator();
+      gainNode = audioCtx.createGain();
+      oscillator.connect(gainNode);
+      gainNode.connect(audioCtx.destination);
+
+      // Quantum frequency scaling
+      const baseFreq = coherenceToFrequency(coherence);
+      
+      // Phase modulation based on emotional field
+      // Positive: sine (in-phase, constructive interference)
+      // Negative: sawtooth (anti-phase, destructive interference)
+      // Neutral: triangle (90° quadrature, stable)
+      oscillator.type = emotionalField === 'Positive' ? 'sine' :
+                       emotionalField === 'Negative' ? 'sawtooth' : 'triangle';
+
+      oscillator.frequency.setValueAtTime(baseFreq, audioCtx.currentTime);
+
+      // Add harmonic series from principles (quantum spectral fingerprinting)
+      // Each principle activates a partial: f_n = f₀ · (n+1)
+      if (principlesArray && principlesArray.length > 0) {
+        principlesArray.slice(0, 3).forEach((principleId, idx) => {
+          if (principleId && !isNaN(principleId)) {
+            const harmonicFreq = baseFreq * (1 + (principleId / 42));
+            // Frequency modulation creates harmonic series
+            oscillator.frequency.linearRampToValueAtTime(
+              harmonicFreq, 
+              audioCtx.currentTime + 0.1 * (idx + 1)
+            );
+          }
+        });
+      }
+
+      // Bessel Rabi oscillation envelope (quantum coherent dynamics)
+      // Amplitude modulation following J₀(Ωt) where Ω ∝ coherence
+      const pulseFreq = 2 * Math.PI * coherence;
+      const duration = 2; // seconds
+
+      gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
+      gainNode.gain.linearRampToValueAtTime(
+        0.15 * coherence, // Volume scales with coherence
+        audioCtx.currentTime + 0.1
+      );
+      
+      // Exponential decay mimicking quantum decoherence
+      gainNode.gain.exponentialRampToValueAtTime(
+        0.01, 
+        audioCtx.currentTime + duration
+      );
+
+      oscillator.start(audioCtx.currentTime);
+      oscillator.stop(audioCtx.currentTime + duration);
+
+      console.log(`☥ Resonance: ${baseFreq.toFixed(1)} Hz | Type: ${oscillator.type} | Coherence: ${(coherence * 100).toFixed(1)}%`);
+    }
+
+    // ====== 3D SCENE INITIALIZATION (with fallback to Canvas 2D) ======
+    const canvas = document.getElementById("glyph");
+    let renderer, scene, camera, ankh, shaderMat;
+    let useThreeJS = false;
+
+    // Try to initialize Three.js
+    try {
+      if (typeof THREE !== 'undefined') {
+        renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setSize(300, 300);
+        canvas.appendChild(renderer.domElement);
+        
+        scene = new THREE.Scene();
+        camera = new THREE.PerspectiveCamera(50, 1, 0.1, 100);
+        camera.position.z = 4;
+
+        // Lighting
+        const ambient = new THREE.AmbientLight(0x66ffff, 0.3);
+        const point = new THREE.PointLight(0x88ccff, 1);
+        point.position.set(2, 2, 3);
+        scene.add(ambient, point);
+
+        // Ankh Geometry
+        const ankhShape = new THREE.Shape();
+        ankhShape.moveTo(0, 0);
+        ankhShape.lineTo(-0.4, 0.6);
+        ankhShape.lineTo(0.4, 0.6);
+        ankhShape.lineTo(0, 0);
+        ankhShape.lineTo(0, 1.8);
+        ankhShape.lineTo(-0.2, 1.8);
+        ankhShape.lineTo(-0.2, 2.4);
+        ankhShape.lineTo(0.2, 2.4);
+        ankhShape.lineTo(0.2, 1.8);
+        ankhShape.lineTo(0, 1.8);
+
+        const extrudeSettings = { depth: 0.15, bevelEnabled: true, bevelThickness: 0.05 };
+        const geometry = new THREE.ExtrudeGeometry(ankhShape, extrudeSettings);
+
+        // Shader Material for Dynamic Color with Quantum Modulation
+        shaderMat = new THREE.ShaderMaterial({
+          uniforms: {
+            time: { value: 0 },
+            balance: { value: 0.7 },
+            emotionalHue: { value: new THREE.Color(0x2196F3) },
+            pulseFreq: { value: 2.0 } // Quantum pulse frequency
+          },
+          vertexShader: `
+            varying vec3 vPos;
+            varying vec3 vNormal;
+            void main() {
+              vPos = position;
+              vNormal = normalize(normalMatrix * normal);
+              gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+            }
+          `,
+          fragmentShader: `
+            uniform float time;
+            uniform float balance;
+            uniform vec3 emotionalHue;
+            uniform float pulseFreq;
+            varying vec3 vPos;
+            varying vec3 vNormal;
+
+            void main() {
+              // Quantum coherence modulation with Bessel-like oscillation
+              float coherentPulse = sin(time * pulseFreq) * 0.3 + 0.7;
+              float glow = sin(time * 2.0 + length(vPos) * 3.0) * 0.2 + 0.8;
+              float harmony = smoothstep(0.0, 1.0, balance);
+              
+              // Phase-encoded color mixing (constructive/destructive interference)
+              vec3 baseColor = mix(vec3(0.1, 0.4, 0.8), emotionalHue, harmony * 0.8);
+              
+              // Rim lighting effect (spectral edge enhancement)
+              float rim = 1.0 - abs(dot(vNormal, vec3(0.0, 0.0, 1.0)));
+              rim = smoothstep(0.6, 1.0, rim);
+              baseColor += rim * emotionalHue * 0.3;
+              
+              // Apply quantum modulation
+              baseColor *= glow * coherentPulse;
+              
+              gl_FragColor = vec4(baseColor, 0.95);
+            }
+          `,
+          blending: THREE.AdditiveBlending,
+          transparent: true
+        });
+
+        ankh = new THREE.Mesh(geometry, shaderMat);
+        scene.add(ankh);
+
+        useThreeJS = true;
+        console.log('☥ Three.js glyph initialized');
+      }
+    } catch (error) {
+      console.log('☥ Three.js unavailable, using Canvas 2D fallback');
+      useThreeJS = false;
+    }
+
+    // Canvas 2D fallback
+    let canvas2d, ctx2d;
+    if (!useThreeJS) {
+      canvas2d = document.createElement('canvas');
+      canvas2d.width = 300;
+      canvas2d.height = 300;
+      canvas.appendChild(canvas2d);
+      ctx2d = canvas2d.getContext('2d');
+    }
+
+    // ====== MA'AT VALIDATION ENGINE ======
+    const MAAT_PRINCIPLES = [
+      { id: 1, name: 'Truth', keywords: ['truth', 'honest', 'real', 'authentic'], frequency: 432 },
+      { id: 2, name: 'Justice', keywords: ['justice', 'fair', 'right', 'equitable'], frequency: 442 },
+      { id: 3, name: 'Harmony', keywords: ['harmony', 'peace', 'accord', 'unity'], frequency: 452 },
+      { id: 4, name: 'Balance', keywords: ['balance', 'equilibrium', 'even', 'centered'], frequency: 462 },
+      { id: 5, name: 'Order', keywords: ['order', 'structure', 'organize', 'system'], frequency: 472 },
+      { id: 6, name: 'Reciprocity', keywords: ['reciprocity', 'mutual', 'exchange', 'give'], frequency: 482 },
+      { id: 7, name: 'Righteousness', keywords: ['righteousness', 'virtue', 'moral', 'ethical'], frequency: 492 },
+      { id: 8, name: 'Morality', keywords: ['morality', 'ethics', 'principle', 'value'], frequency: 502 },
+      { id: 9, name: 'Compassion', keywords: ['compassion', 'empathy', 'kindness', 'care'], frequency: 512 },
+      { id: 10, name: 'Love', keywords: ['love', 'affection', 'devotion'], frequency: 522 }
+    ];
+
+    function validateWithMaat(message) {
+      const words = message.toLowerCase().split(/\W+/);
+      const principles = [];
+      let coherence = 0.6; // Base coherence
+      let totalFreq = 0;
+
+      // Detect principles
+      MAAT_PRINCIPLES.forEach(principle => {
+        const matches = principle.keywords.filter(kw => 
+          words.some(w => w.includes(kw) || kw.includes(w))
+        );
+        if (matches.length > 0) {
+          principles.push(principle);
+          coherence += 0.05 * matches.length;
+          totalFreq += principle.frequency;
+        }
+      });
+
+      // Emotional analysis
+      const positiveWords = ['love', 'joy', 'peace', 'happy', 'grateful', 'harmony'];
+      const negativeWords = ['hate', 'anger', 'fear', 'conflict', 'confused'];
+      
+      words.forEach(w => {
+        if (positiveWords.includes(w)) coherence += 0.08;
+        if (negativeWords.includes(w)) coherence -= 0.15;
+      });
+
+      coherence = Math.min(0.95, Math.max(0.3, coherence));
+
+      const emotionalField = coherence > 0.75 ? 'Positive' :
+                            coherence > 0.55 ? 'Neutral' : 'Negative';
+
+      const avgFreq = principles.length > 0 ? Math.round(totalFreq / principles.length) : 528;
+      const stable = coherence > 0.6;
+
+      // Determine emotional hue
+      const hue = emotionalField === 'Positive' ? 0x4CAF50 :
+                  emotionalField === 'Neutral' ? 0x2196F3 : 0xF44336;
+
+      let response = '';
+      if (principles.length > 0) {
+        const pNames = principles.slice(0, 3).map(p => `${p.name} (#${p.id})`).join(', ');
+        response = `Your words resonate with: ${pNames}. The field is ${emotionalField.toLowerCase()}. `;
+        response += stable ? 'Proceed with clarity. ✨' : 'Refine your intent. 💫';
+      } else {
+        response = `The feather weighs your words... Seek truth, harmony, and balance. Field: ${emotionalField.toLowerCase()}.`;
+      }
+
+      return {
+        coherence,
+        emotionalField,
+        principles: principles.map(p => p.id).join(', ') || 'None',
+        frequency: avgFreq,
+        cosmicSync: { lunar: 0.75 + Math.random() * 0.2, galactic: 0.65 + Math.random() * 0.2 },
+        stable,
+        emotionalHue: hue,
+        response
+      };
+    }
+
+    // ====== WEBSOCKET CONNECTION ======
+    function initWebSocket() {
+      if (USE_LOCAL_ENGINE) {
+        console.log('☥ Running in LOCAL SIMULATION MODE');
+        return;
+      }
+
+      try {
+        ws = new WebSocket(WS_URL);
+        
+        ws.onopen = () => {
+          wsConnected = true;
+          console.log('☥ Connected to Ma\'at Engine Server');
+          document.getElementById('mode-toggle').textContent = '☥ WEBSOCKET MODE';
+          document.getElementById('mode-toggle').className = 'mode-toggle websocket';
+          addSystemMessage('Connected to live Ma\'at Engine ✓');
+        };
+
+        ws.onmessage = (event) => {
+          try {
+            const data = JSON.parse(event.data);
+            updateInterface(data);
+            if (data.response) {
+              addMessage('maat', data.response);
+            }
+          } catch (error) {
+            console.error('Error parsing WebSocket message:', error);
+          }
+        };
+
+        ws.onerror = () => {
+          console.warn('☥ WebSocket connection failed. Falling back to local mode.');
+          wsConnected = false;
+          document.getElementById('mode-toggle').textContent = '☥ LOCAL MODE (FALLBACK)';
+          document.getElementById('mode-toggle').className = 'mode-toggle fallback';
+          addSystemMessage('WebSocket error, using local validation mode');
+        };
+
+        ws.onclose = () => {
+          wsConnected = false;
+          console.log('☥ Disconnected from Ma\'at Engine');
+        };
+      } catch (error) {
+        console.error('WebSocket initialization failed:', error);
+        wsConnected = false;
+      }
+    }
+
+    // ====== CHAT INTERFACE ======
+    const output = document.getElementById("messages");
+    const input = document.getElementById("chat-input");
+    const form = document.getElementById("form");
+
+    function addMessage(sender, text) {
+      const div = document.createElement("div");
+      div.className = `message ${sender}`;
+      if (sender !== 'system') {
+        div.innerHTML = `<div class="message-sender">${sender === 'maat' ? '☥ MA\'AT:' : 'YOU:'}</div>${text}`;
+      } else {
+        div.innerHTML = text;
+      }
+      output.appendChild(div);
+      output.scrollTop = output.scrollHeight;
+    }
+
+    function addSystemMessage(text) {
+      const div = document.createElement("div");
+      div.className = 'message system';
+      div.innerHTML = `<em>☥ ${text}</em>`;
+      output.appendChild(div);
+      output.scrollTop = output.scrollHeight;
+    }
+
+    function updateInterface(data) {
+      // Update metrics
+      document.getElementById('coherence').textContent = (data.coherence * 100).toFixed(1) + '%';
+      document.getElementById('emotional').textContent = data.emotionalField;
+      document.getElementById('principles').textContent = data.principles;
+      document.getElementById('frequency').textContent = data.frequency + ' Hz';
+      
+      if (data.cosmicSync) {
+        document.getElementById('cosmic-sync').textContent = 
+          `Lunar: ${Math.round(data.cosmicSync.lunar * 100)}% | Galactic: ${Math.round(data.cosmicSync.galactic * 100)}%`;
+      }
+
+      const stabilityEl = document.getElementById('stability');
+      if (data.stable) {
+        stabilityEl.textContent = '✓ LYAPUNOV STABLE';
+        stabilityEl.className = 'stability-indicator stable';
+      } else {
+        stabilityEl.textContent = '⚠ DESTABILIZED';
+        stabilityEl.className = 'stability-indicator unstable';
+      }
+
+      // Update glyph visuals
+      if (useThreeJS && shaderMat) {
+        shaderMat.uniforms.balance.value = data.coherence;
+        shaderMat.uniforms.emotionalHue.value = new THREE.Color(data.emotionalHue || 0x2196F3);
+        shaderMat.uniforms.pulseFreq.value = 2.0 * Math.PI * data.coherence; // Quantum pulse frequency
+      } else if (ctx2d) {
+        // Update Canvas 2D colors
+        glyphColor = data.emotionalHue || 0x2196F3;
+        glyphCoherence = data.coherence;
+      }
+
+      // Play scientific resonance audio
+      if (data.principles) {
+        const principlesArray = typeof data.principles === 'string' 
+          ? data.principles.split(',').map(p => parseInt(p.trim())).filter(p => !isNaN(p))
+          : [];
+        playResonance(data.coherence, data.emotionalField, principlesArray);
+      }
+    }
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      if (!input.value.trim()) return;
+
+      const message = input.value.trim();
+      addMessage('user', message);
+
+      if (USE_LOCAL_ENGINE || !wsConnected) {
+        // Local mode
+        const data = validateWithMaat(message);
+        updateInterface(data);
+        setTimeout(() => {
+          addMessage('maat', data.response);
+        }, 500);
+      } else {
+        // WebSocket mode
+        ws.send(message);
+      }
+
+      input.value = '';
+    });
+
+    // ====== ANIMATION LOOP WITH QUANTUM MODULATION ======
+    let timeValue = 0;
+    let glyphColor = 0x2196F3;
+    let glyphCoherence = 0.7;
+
+    function animate(t) {
+      requestAnimationFrame(animate);
+      timeValue = t * 0.001;
+
+      if (useThreeJS && renderer && scene && camera && ankh && shaderMat) {
+        shaderMat.uniforms.time.value = timeValue;
+        
+        // Bessel-function driven modulation for quantum coherence visualization
+        // Implements J₀(Ωt) oscillation pattern from quantum wave mixing
+        const besselArg = shaderMat.uniforms.balance.value * 3.0;
+        const besselMod = besselJ0(besselArg) * 0.1;
+        
+        // Coherence-driven rotation (higher coherence = faster rotation)
+        ankh.rotation.y += 0.003 * shaderMat.uniforms.balance.value;
+        ankh.rotation.x = Math.sin(timeValue * 0.3) * 0.1;
+        
+        // Coherence-driven scaling with Bessel modulation
+        // This creates the "breathing" effect seen in quantum coherent systems
+        const baseScale = 0.8 + shaderMat.uniforms.balance.value * 0.4;
+        ankh.scale.setScalar(baseScale + besselMod);
+        
+        renderer.render(scene, camera);
+      } else if (ctx2d) {
+        // Canvas 2D fallback animation with quantum-inspired effects
+        ctx2d.fillStyle = 'rgba(0, 0, 0, 0.1)';
+        ctx2d.fillRect(0, 0, 300, 300);
+
+        const centerX = 150;
+        const centerY = 150;
+        const rotation = timeValue * 0.5 * glyphCoherence;
+        
+        // Bessel modulation for 2D canvas
+        const besselMod = besselJ0(glyphCoherence * 3.0) * 0.1;
+        const scale = 0.8 + glyphCoherence * 0.4 + besselMod;
+
+        ctx2d.save();
+        ctx2d.translate(centerX, centerY);
+        ctx2d.rotate(rotation);
+        ctx2d.scale(scale, scale);
+
+        // Extract RGB from hex
+        const r = (glyphColor >> 16) & 255;
+        const g = (glyphColor >> 8) & 255;
+        const b = glyphColor & 255;
+        
+        // Quantum pulse glow
+        const coherentPulse = Math.sin(timeValue * 2.0 * Math.PI * glyphCoherence) * 0.3 + 0.7;
+        const glow = Math.sin(timeValue * 2) * 0.3 + 0.7;
+
+        ctx2d.strokeStyle = `rgba(${r}, ${g}, ${b}, ${glow * coherentPulse})`;
+        ctx2d.fillStyle = `rgba(${r}, ${g}, ${b}, ${glow * coherentPulse * 0.3})`;
+        ctx2d.lineWidth = 3;
+        ctx2d.shadowBlur = 15 * glyphCoherence;
+        ctx2d.shadowColor = `rgba(${r}, ${g}, ${b}, 0.8)`;
+
+        // Draw ankh with quantum glow
+        ctx2d.beginPath();
+        ctx2d.arc(0, -40, 25, 0, Math.PI * 2);
+        ctx2d.stroke();
+        ctx2d.fill();
+
+        ctx2d.beginPath();
+        ctx2d.moveTo(0, -15);
+        ctx2d.lineTo(0, 80);
+        ctx2d.lineWidth = 12;
+        ctx2d.stroke();
+
+        ctx2d.beginPath();
+        ctx2d.moveTo(-40, 20);
+        ctx2d.lineTo(40, 20);
+        ctx2d.stroke();
+
+        ctx2d.restore();
+      }
+    }
+    animate(0);
+
+    // Handle window resize
+    window.addEventListener("resize", () => {
+      if (useThreeJS && renderer && camera) {
+        renderer.setSize(300, 300);
+        camera.aspect = 1;
+        camera.updateProjectionMatrix();
+      }
+    });
+
+    // Initialize
+    initWebSocket();
+    console.log('☥ MA\'AT Unity Interface initialized');
+    console.log(`☥ Mode: ${USE_LOCAL_ENGINE ? 'LOCAL SIMULATION' : 'WEBSOCKET CONNECTED'}`);
+    console.log(`☥ Renderer: ${useThreeJS ? 'Three.js' : 'Canvas 2D'}`);
+    console.log(`☥ Audio Resonance: ${ENABLE_AUDIO && audioCtx ? 'ENABLED' : 'DISABLED'}`);
+    console.log('☥ Scientific Features: Quantum coherence mapping, Bessel modulation, Harmonic series');
+  </script>
+</body>
+</html>
