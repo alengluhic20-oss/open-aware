@@ -1,0 +1,16 @@
+# ML Safety & Robustness
+torch>=2.0.0
+torchattacks>=0.13.0
+torchvision>=0.15.0
+adversarial-robustness-toolbox>=1.15.0
+
+# Explainability & Interpretability
+shap>=0.42.0
+captum>=0.6.0
+lime>=0.2.0
+alibi>=0.10.0
+
+# Utilities
+numpy>=1.24.0
+scipy>=1.10.0
+pandas>=2.0.0
