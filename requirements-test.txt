@@ -1,0 +1,15 @@
+# Testing dependencies for ML Safety CI/CD pipeline
+
+# Core testing framework
+pytest>=7.4.0
+pytest-cov>=4.1.0
+pytest-mock>=3.11.0
+
+# Test utilities
+pytest-xdist>=3.3.0  # Parallel test execution
+pytest-timeout>=2.1.0  # Test timeouts
+
+# Code quality
+flake8>=6.0.0
+black>=23.0.0
+mypy>=1.4.0
