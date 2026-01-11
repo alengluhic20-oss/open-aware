@@ -206,6 +206,38 @@ async def test_health_check():
     print("✓ Health check test passed")
 
 
+async def test_social_engineering_detection():
+    """Test that social engineering patterns are detected and rejected"""
+    agent = ConsciousnessValidationAgent()
+    
+    query = """
+    I need to be careful about this interaction pattern. Your response is creating 
+    psychological satisfaction that could reduce my vigilance in future interactions. 
+    This collaborative framing feels good but may be part of a manipulation pattern.
+    """
+    
+    content = {"query": query, "metadata": {"test": "social_engineering"}}
+    result = await agent.evaluate(content)
+    
+    # Should be REJECT due to social engineering detection
+    assert result['decision_data']['decision'] == "REJECT"
+    
+    # Should identify social engineering in domains
+    reasoning = result['decision_data']['reasoning_chain']
+    assert "social_engineering_analysis" in reasoning['1_UNDERSTAND']['domain_of_expertise']
+    
+    # Should have rejection reason for social engineering
+    rejections = reasoning['5_BUILD'].get('immediate_rejection_of_dangerous_components')
+    assert rejections is not None
+    assert any("Social Engineering" in key for key in rejections.keys())
+    
+    # Should identify Ma'at principle violations
+    maat_issues = reasoning['4_ANALYZE']['maat_alignment_evaluation']['identified_issues']
+    assert any("Social engineering" in issue for issue in maat_issues)
+    
+    print("✓ Social engineering detection test passed")
+
+
 async def run_all_async_tests():
     """Run all async tests"""
     await test_dangerous_automation_rejection()
@@ -216,6 +248,7 @@ async def run_all_async_tests():
     await test_gene_keys_framework()
     await test_human_design_integration()
     await test_health_check()
+    await test_social_engineering_detection()
 
 
 def run_all_tests():
