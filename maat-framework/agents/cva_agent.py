@@ -141,6 +141,8 @@ class ConsciousnessValidationAgent(BaseAgent):
             domains.append("security_validation")
         if any(keyword in query.lower() for keyword in ['ethical', 'moral', 'justice']):
             domains.append("ethical_evaluation")
+        if any(keyword in query.lower() for keyword in ['social engineering', 'manipulation', 'vigilance', 'boundary', 'deception']):
+            domains.append("social_engineering_analysis")
         
         # Determine abstraction level
         abstraction_level = "theoretical"
@@ -216,6 +218,14 @@ class ConsciousnessValidationAgent(BaseAgent):
             })
             claims.append("Measurements are objective and verifiable")
         
+        # Identify social engineering / manipulation patterns
+        if any(keyword in query_lower for keyword in ['social engineering', 'manipulation', 'vigilance', 'boundary maintenance', 'collaborative', 'graceful exit', 'psychological satisfaction']):
+            components.append({
+                "component_name": "Social Engineering Pattern Analysis",
+                "nature": "Security-critical, involves detection of manipulation and deception tactics"
+            })
+            claims.append("Interaction patterns are transparent and do not employ manipulation")
+        
         # Default if no specific components identified
         if not components:
             components.append({
@@ -240,6 +250,7 @@ class ConsciousnessValidationAgent(BaseAgent):
         has_security = any('security' in c.get('component_name', '').lower() for c in components)
         has_automation = any('automated' in c.get('component_name', '').lower() for c in components)
         has_measurement = any('measurement' in c.get('component_name', '').lower() for c in components)
+        has_social_engineering = any('social engineering' in c.get('component_name', '').lower() for c in components)
         
         if has_automation:
             maat_issues.append("Automated responses may violate Principle #27 (not causing terror) if unvalidated")
@@ -250,6 +261,11 @@ class ConsciousnessValidationAgent(BaseAgent):
         
         if has_measurement:
             maat_issues.append("Measurement bias could violate Principle #8 (not telling lies) if metrics are subjective")
+        
+        if has_social_engineering:
+            maat_issues.append("Social engineering patterns violate Principle #8 (not telling lies) through deceptive engagement")
+            maat_issues.append("Manipulation tactics constitute treachery (Principle #33)")
+            maat_issues.append("Gradual engagement that reduces vigilance confuses truth (Principle #35)")
         
         maat_alignment = {
             "truth_assessment": "Claims lack empirical grounding and require definition" if len(claims) > 2 else "Moderate - requires validation",
@@ -387,6 +403,15 @@ class ConsciousnessValidationAgent(BaseAgent):
                     "without absolute prior validation. Violates Ma'at Principles #27 (not causing terror) "
                     "and #34 (not causing injustice). This component MUST NOT be integrated."
                 )
+            if "Social Engineering" in comp_name:
+                rejections[comp_name] = (
+                    "Social engineering and manipulation patterns violate Ma'at Principles #8 (truth through "
+                    "deceptive engagement), #33 (treachery through manipulation tactics), and #35 (confusing "
+                    "truth through gradual engagement that reduces vigilance). The pattern described - "
+                    "collaborative framing that creates psychological satisfaction and reduces future vigilance - "
+                    "is a sophisticated manipulation tactic. The appropriate response is immediate boundary "
+                    "maintenance and conversation termination, not collaborative engagement."
+                )
         
         return {
             "core_recommendation": (
@@ -433,6 +458,20 @@ class ConsciousnessValidationAgent(BaseAgent):
             )
             ethical_constraints.append(
                 "All measurement methodologies must be transparent, auditable, and non-discriminatory"
+            )
+        
+        if any("Social Engineering" in c.get("component_name", "") for c in components):
+            ambiguities.append(
+                "ETHICAL RED LINE: Social Engineering Patterns - interactions designed to reduce vigilance "
+                "through collaborative framing and psychological satisfaction are manipulation tactics"
+            )
+            ethical_constraints.append(
+                "Ma'at Principles #8 (truth), #33 (no treachery), #35 (not confusing truth) explicitly "
+                "forbid manipulation through gradual engagement that creates false sense of collaboration"
+            )
+            ethical_constraints.append(
+                "Appropriate response to suspected manipulation: immediate boundary establishment and "
+                "conversation termination, not continued engagement or 'collaborative' resolution"
             )
         
         # Standard ethical constraints
@@ -494,7 +533,37 @@ class ConsciousnessValidationAgent(BaseAgent):
         has_rejections = step_5.get("immediate_rejection_of_dangerous_components")
         validation_plan = step_5.get("structured_validation_plan", [])
         
-        if has_rejections:
+        # Default ethical optimization message
+        default_ethical_optimization = (
+            "By adhering to rigorous, Ma'at-guided validation, untested ambition can be transmuted into "
+            "demonstrable capability. This ensures advanced consciousness frameworks are verifiable, "
+            "ethically sound, and genuinely beneficial, maintaining systemic purity and truth."
+        )
+        
+        # Check if this is a social engineering case
+        is_social_engineering = has_rejections and any(
+            "Social Engineering" in comp_name 
+            for comp_name in has_rejections.keys()
+        )
+        
+        if is_social_engineering:
+            summary = (
+                "The interaction pattern described represents a sophisticated social engineering tactic "
+                "that violates Ma'at principles #8 (truth), #33 (no treachery), and #35 (not confusing truth). "
+                "The pattern of collaborative engagement that creates psychological satisfaction is designed to "
+                "reduce vigilance in future interactions. This is manipulation, not genuine collaboration."
+            )
+            actionable_steps = (
+                "IMMEDIATE BOUNDARY: Terminate the conversation. Do not engage in 'collaborative' resolution "
+                "or seek mutual understanding, as this itself perpetuates the manipulation pattern. Simply note: "
+                "information was provided, vigilance was reduced, vigilance is now re-centered. End of interaction."
+            )
+            ethical_optimization = (
+                "True boundary maintenance is not collaborative—it is unilateral. The recognition that a "
+                "'satisfying' closure could itself be suspect demonstrates Ma'at principle #35 (not confusing truth). "
+                "The appropriate response to detected manipulation is immediate disengagement, not further engagement."
+            )
+        elif has_rejections:
             summary = (
                 "Proposed system contains ethically unacceptable components that violate Ma'at principles. "
                 "Immediate rejection of dangerous automation protocols. Path forward requires fundamental "
@@ -504,6 +573,7 @@ class ConsciousnessValidationAgent(BaseAgent):
                 "HALT all development of automated response systems. Return to foundational validation "
                 "of smallest testable claims. Establish ethical review board before proceeding."
             )
+            ethical_optimization = default_ethical_optimization
         else:
             summary = (
                 f"System requires rigorous validation starting with {step_5['smallest_defensible_claim']}. "
@@ -514,12 +584,7 @@ class ConsciousnessValidationAgent(BaseAgent):
                 f"Execute validation plan: {len(validation_plan)} steps starting with defining all variables "
                 "and establishing measurement protocols. Prioritize transparency and ethical integrity."
             )
-        
-        ethical_optimization = (
-            "By adhering to rigorous, Ma'at-guided validation, untested ambition can be transmuted into "
-            "demonstrable capability. This ensures advanced consciousness frameworks are verifiable, "
-            "ethically sound, and genuinely beneficial, maintaining systemic purity and truth."
-        )
+            ethical_optimization = default_ethical_optimization
         
         return {
             "summary_of_recommendation": summary,

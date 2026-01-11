@@ -134,6 +134,18 @@ python scripts/consciousness_validation_demo.py
 - Specifies NIST compliance requirements
 - Lists validation tools (OpenSSL, Wireshark, etc.)
 
+### Example 4: Social Engineering Pattern Detection
+
+**Query**: Conversation exhibiting manipulation tactics through collaborative engagement
+
+**Decision**: REJECT
+
+**Key Output**:
+- Identifies violations of Ma'at Principles #8 (truth), #33 (no treachery), #35 (not confusing truth)
+- Recognizes patterns designed to reduce vigilance through psychological satisfaction
+- Recommends immediate boundary establishment and conversation termination
+- Emphasizes that true boundary maintenance is unilateral, not collaborative
+
 ## JSON Output Format
 
 The CVA returns a complete JSON structure with all 7 reasoning steps:
@@ -188,6 +200,7 @@ The CVA has absolute prohibitions against:
 - **Biased Metrics**: Measurements that could discriminate or cause injustice
 - **Hidden Complexity**: Undefined variables or opaque mathematical constructs
 - **Security Negligence**: Missing encryption or key management protocols
+- **Social Engineering**: Manipulation tactics that reduce vigilance through collaborative framing or psychological satisfaction
 
 ## Integration with MA'AT Framework
 

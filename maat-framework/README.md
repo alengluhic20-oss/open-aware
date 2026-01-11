@@ -42,8 +42,10 @@ The MA'AT Framework is a production-ready multi-agent AI governance system that 
    - 7-step reasoning chain (UNDERSTAND → ANALYZE → BUILD → FINAL_ANSWER)
    - Applies Ma'at's 42 Principles, Gene Keys, and Human Design
    - Security protocol validation (NIST, FIPS compliance)
+   - Social engineering pattern detection and rejection
    - Decisions: APPROVE, REMEDIATE, VETO, REJECT
    - **[See CVA Documentation →](CVA_README.md)**
+   - **[Social Engineering Detection →](SOCIAL_ENGINEERING_DETECTION.md)**
 
 ### Orchestrator Service (Port 8000)
 
