@@ -533,13 +533,18 @@ class ConsciousnessValidationAgent(BaseAgent):
         has_rejections = step_5.get("immediate_rejection_of_dangerous_components")
         validation_plan = step_5.get("structured_validation_plan", [])
         
+        # Default ethical optimization message
+        default_ethical_optimization = (
+            "By adhering to rigorous, Ma'at-guided validation, untested ambition can be transmuted into "
+            "demonstrable capability. This ensures advanced consciousness frameworks are verifiable, "
+            "ethically sound, and genuinely beneficial, maintaining systemic purity and truth."
+        )
+        
         # Check if this is a social engineering case
-        is_social_engineering = False
-        if has_rejections:
-            for comp_name in has_rejections.keys():
-                if "Social Engineering" in comp_name:
-                    is_social_engineering = True
-                    break
+        is_social_engineering = has_rejections and any(
+            "Social Engineering" in comp_name 
+            for comp_name in has_rejections.keys()
+        )
         
         if is_social_engineering:
             summary = (
@@ -568,11 +573,7 @@ class ConsciousnessValidationAgent(BaseAgent):
                 "HALT all development of automated response systems. Return to foundational validation "
                 "of smallest testable claims. Establish ethical review board before proceeding."
             )
-            ethical_optimization = (
-                "By adhering to rigorous, Ma'at-guided validation, untested ambition can be transmuted into "
-                "demonstrable capability. This ensures advanced consciousness frameworks are verifiable, "
-                "ethically sound, and genuinely beneficial, maintaining systemic purity and truth."
-            )
+            ethical_optimization = default_ethical_optimization
         else:
             summary = (
                 f"System requires rigorous validation starting with {step_5['smallest_defensible_claim']}. "
@@ -583,11 +584,7 @@ class ConsciousnessValidationAgent(BaseAgent):
                 f"Execute validation plan: {len(validation_plan)} steps starting with defining all variables "
                 "and establishing measurement protocols. Prioritize transparency and ethical integrity."
             )
-            ethical_optimization = (
-                "By adhering to rigorous, Ma'at-guided validation, untested ambition can be transmuted into "
-                "demonstrable capability. This ensures advanced consciousness frameworks are verifiable, "
-                "ethically sound, and genuinely beneficial, maintaining systemic purity and truth."
-            )
+            ethical_optimization = default_ethical_optimization
         
         return {
             "summary_of_recommendation": summary,
