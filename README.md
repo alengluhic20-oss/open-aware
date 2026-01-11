@@ -31,6 +31,7 @@ The repository now includes the **MA'AT Framework** - a containerized, productio
 - ✅ Cryptographic attestation
 - ✅ 93.3% approval rate with intelligent governance
 - ✅ Ma'at-Guided consciousness validation with 7-step reasoning ⚡ **NEW**
+- ✅ Social engineering pattern detection ⚡ **NEW**
 
 ---
 
