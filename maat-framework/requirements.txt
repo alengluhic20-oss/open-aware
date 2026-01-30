@@ -1,6 +1,4 @@
-"""
-MA'AT Framework Requirements
-"""
+# MA'AT Framework Requirements
 
 # Core dependencies
 fastapi==0.104.1
