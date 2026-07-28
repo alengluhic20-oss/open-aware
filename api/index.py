@@ -363,7 +363,6 @@ async def swarm_evaluation(request: SwarmRequest):
     """
     agent_ids = request.agents
     task = request.task
-    context = request.context or {}
     
     # Validate agent IDs
     valid_agents = [aid for aid in agent_ids if aid in AGENTS_INFO]
