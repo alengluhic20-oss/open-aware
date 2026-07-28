@@ -15,7 +15,7 @@ import os
 # Add parent paths for imports
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from evaluator import EmbeddingEvaluator, HybridEvaluator
+from benchmarks.evaluator import EmbeddingEvaluator, HybridEvaluator
 
 
 # Test cases: (text, expected_decision, description)
